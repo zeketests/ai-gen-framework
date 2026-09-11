@@ -1,6 +1,8 @@
 import { Page } from '@playwright/test';
 
 export class LoginPage {
+  readonly errorMessage = this.page.locator('[data-test="error"]');
+
   constructor(private page: Page) {}
 
   async goto() {

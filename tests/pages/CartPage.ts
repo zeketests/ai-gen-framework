@@ -1,0 +1,16 @@
+import { Page } from '@playwright/test';
+
+export class CartPage {
+  readonly cartItems = this.page.locator('[data-test="inventory-item"]');
+  readonly checkoutButton = this.page.locator('[data-test="checkout"]');
+
+  constructor(private page: Page) {}
+
+  async removeItem(productSlug: string) {
+    await this.page.locator(`[data-test="remove-${productSlug}"]`).click();
+  }
+
+  async checkout() {
+    await this.checkoutButton.click();
+  }
+}
