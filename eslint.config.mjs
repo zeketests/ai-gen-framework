@@ -29,7 +29,7 @@ export default [
       'playwright/no-wait-for-timeout': 'error',
       'playwright/no-conditional-in-test': 'error',
       'playwright/expect-expect': 'error',
-      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
   prettier,
