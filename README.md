@@ -38,6 +38,7 @@ Run a single file: `npx playwright test tests/example.spec.ts`
 | `tests/cart/cart.spec.ts`           | Add-to-cart badge count, multi-item add, remove clears badge, cart survives reload                                                 |
 | `tests/inventory/inventory.spec.ts` | Sort by price (low/high, high/low) and name (A–Z), logout via burger menu blocks back-navigation into inventory                    |
 | `tests/checkout/checkout.spec.ts`   | Full purchase flow (add to cart → checkout info → overview → finish → confirmation); blocked checkout when required fields missing |
+| `tests/a11y/a11y.spec.ts`           | Axe (`@axe-core/playwright`, WCAG 2 A/AA) scan on login, inventory, cart, and checkout step one — asserts zero violations          |
 
 Page objects: `LoginPage`, `InventoryPage`, `CartPage`, `CheckoutPage` (`tests/pages/`).
 Fixtures (`tests/fixtures.ts`): inject page objects directly (`{ loginPage, inventoryPage, cartPage, checkoutPage }`), plus a `loggedInPage` fixture that logs in as `standard_user` before the test body runs — use it instead of repeating login steps in every spec.
