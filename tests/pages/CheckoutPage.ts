@@ -7,7 +7,9 @@ export class CheckoutPage {
   readonly continueButton = this.page.locator('[data-test="continue"]');
   readonly finishButton = this.page.locator('[data-test="finish"]');
   readonly completeHeader = this.page.locator('[data-test="complete-header"]');
-  readonly summaryTotalLabel = this.page.locator('[data-test="total-label"]');
+  readonly subtotalLabel = this.page.locator('[data-test="subtotal-label"]');
+  readonly taxLabel = this.page.locator('[data-test="tax-label"]');
+  readonly totalLabel = this.page.locator('[data-test="total-label"]');
 
   constructor(private page: Page) {}
 

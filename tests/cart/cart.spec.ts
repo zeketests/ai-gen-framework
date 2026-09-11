@@ -31,4 +31,17 @@ test.describe('Cart', () => {
 
     await expect(inventoryPage.cartBadge).toHaveText('1');
   });
+
+  test('cart page is empty by default and continue shopping returns to inventory', async ({
+    page,
+    loggedInPage: inventoryPage,
+    cartPage,
+  }) => {
+    await inventoryPage.goToCart();
+
+    await expect(cartPage.cartItems).toHaveCount(0);
+
+    await cartPage.continueShopping();
+    await expect(page).toHaveURL(/inventory/);
+  });
 });

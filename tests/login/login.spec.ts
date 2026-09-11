@@ -24,4 +24,13 @@ test.describe('Login', () => {
 
     await expect(page).toHaveURL(/inventory/);
   });
+
+  for (const username of ['problem_user', 'performance_glitch_user', 'error_user', 'visual_user']) {
+    test(`logs in successfully as ${username}`, async ({ page, loginPage }) => {
+      await loginPage.goto();
+      await loginPage.login(username, 'secret_sauce');
+
+      await expect(page).toHaveURL(/inventory/);
+    });
+  }
 });
