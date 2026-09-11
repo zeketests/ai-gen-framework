@@ -36,6 +36,8 @@ Page objects: `LoginPage`, `InventoryPage`, `CartPage`, `CheckoutPage` (`tests/p
 
 - **GitHub Actions** (`.github/workflows/playwright.yml`) — installs deps + browsers, runs the full suite headless on push/PR, uploads the HTML report as a build artifact.
 - **Claude Code** — repo instructions live in `CLAUDE.md` (commands, conventions, branch rules) so an agent can pick up context and generate/extend tests consistently with the existing structure.
+- **`@playwright/cli`** ([microsoft/playwright-cli](https://github.com/microsoft/playwright-cli)) — official CLI for driving Playwright from coding agents (record/generate code, inspect selectors, screenshots) without loading MCP-sized tool schemas into context. Skill installed at `.claude/skills/playwright-cli/`.
+- **`/pr` skill** (`.claude/skills/pr/`) — opens well-structured pull requests (diff-based summary, required test plan) via `gh pr create`.
 
 ## Conventions
 

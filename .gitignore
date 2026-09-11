@@ -12,3 +12,5 @@ node_modules/
 
 # Env
 .env
+# Playwright CLI output (may contain credentials)
+.playwright-cli/
