@@ -31,16 +31,16 @@ Run a single file: `npx playwright test tests/example.spec.ts`
 
 ## Tests
 
-| Spec                                | Coverage                                                                                                                           |
-| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `tests/example.spec.ts`             | Playwright.dev smoke test (title, get-started link) — scaffold sample, not app-specific                                            |
-| `tests/login/login.spec.ts`         | Invalid credentials, locked-out user, valid login lands on inventory page                                                          |
-| `tests/cart/cart.spec.ts`           | Add-to-cart badge count, multi-item add, remove clears badge, cart survives reload                                                 |
-| `tests/inventory/inventory.spec.ts` | Sort by price (low/high, high/low) and name (A–Z), logout via burger menu blocks back-navigation into inventory                    |
-| `tests/checkout/checkout.spec.ts`   | Full purchase flow (add to cart → checkout info → overview → finish → confirmation); blocked checkout when required fields missing |
-| `tests/a11y/a11y.spec.ts`           | Axe (`@axe-core/playwright`, WCAG 2 A/AA) scan on login, inventory, cart, and checkout step one — asserts zero violations          |
+| Spec                                | Coverage                                                                                                                                                                                       |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tests/example.spec.ts`             | Playwright.dev smoke test (title, get-started link) — scaffold sample, not app-specific                                                                                                        |
+| `tests/login/login.spec.ts`         | Invalid credentials, locked-out user, valid login lands on inventory page, all other seeded users (`problem_user`, `performance_glitch_user`, `error_user`, `visual_user`) log in successfully |
+| `tests/cart/cart.spec.ts`           | Add-to-cart badge count, multi-item add, remove clears badge, cart survives reload, empty cart + continue shopping                                                                             |
+| `tests/inventory/inventory.spec.ts` | Sort by price (low/high, high/low) and name (A–Z), product detail page navigation + add-to-cart from there, logout via burger menu blocks back-navigation into inventory                       |
+| `tests/checkout/checkout.spec.ts`   | Full purchase flow (add to cart → checkout info → overview → finish → confirmation); blocked checkout when required fields missing; order summary total equals item subtotal plus tax          |
+| `tests/a11y/a11y.spec.ts`           | Axe (`@axe-core/playwright`, WCAG 2 A/AA) scan on login, inventory, cart, and checkout step one — asserts zero violations                                                                      |
 
-Page objects: `LoginPage`, `InventoryPage`, `CartPage`, `CheckoutPage` (`tests/pages/`).
+Page objects: `LoginPage`, `InventoryPage`, `ProductPage`, `CartPage`, `CheckoutPage` (`tests/pages/`).
 Fixtures (`tests/fixtures.ts`): inject page objects directly (`{ loginPage, inventoryPage, cartPage, checkoutPage }`), plus a `loggedInPage` fixture that logs in as `standard_user` before the test body runs — use it instead of repeating login steps in every spec.
 
 ## Integrations

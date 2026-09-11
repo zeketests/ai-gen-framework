@@ -1,6 +1,24 @@
 import { test, expect } from '../fixtures';
+import { ProductPage } from '../pages/ProductPage';
 
 test.describe('Inventory', () => {
+  test('opens a product detail page and adds it to cart from there', async ({
+    page,
+    loggedInPage: inventoryPage,
+  }) => {
+    const productPage = new ProductPage(page);
+
+    await inventoryPage.openProduct('Sauce Labs Backpack');
+    await expect(page).toHaveURL(/inventory-item.html/);
+    await expect(productPage.name).toHaveText('Sauce Labs Backpack');
+
+    await productPage.addToCart();
+    await expect(inventoryPage.cartBadge).toHaveText('1');
+
+    await productPage.backToProducts();
+    await expect(page).toHaveURL(/inventory.html/);
+  });
+
   test('sorts products by price low to high', async ({ loggedInPage: inventoryPage }) => {
     await inventoryPage.sortBy('lohi');
 

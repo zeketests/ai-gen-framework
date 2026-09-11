@@ -44,4 +44,28 @@ test.describe('Checkout', () => {
     await expect(page).toHaveURL(/checkout-step-one/);
     await expect(page.locator('[data-test="error"]')).toBeVisible();
   });
+
+  test('order summary total equals item total plus tax', async ({
+    loggedInPage: inventoryPage,
+    cartPage,
+    checkoutPage,
+  }) => {
+    await inventoryPage.addToCart('sauce-labs-backpack');
+    await inventoryPage.addToCart('sauce-labs-bike-light');
+    await inventoryPage.goToCart();
+    await cartPage.checkout();
+
+    await checkoutPage.fillInfo('John', 'Doe', '12345');
+    await checkoutPage.continueToOverview();
+
+    const subtotal = parseFloat(
+      (await checkoutPage.subtotalLabel.textContent())!.replace(/[^0-9.]/g, ''),
+    );
+    const tax = parseFloat((await checkoutPage.taxLabel.textContent())!.replace(/[^0-9.]/g, ''));
+    const total = parseFloat(
+      (await checkoutPage.totalLabel.textContent())!.replace(/[^0-9.]/g, ''),
+    );
+
+    expect(total).toBeCloseTo(subtotal + tax, 2);
+  });
 });
