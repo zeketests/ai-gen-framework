@@ -10,19 +10,23 @@ npm ci
 npx playwright install --with-deps
 
 # Run all tests
-npx playwright test
+npm test
 
 # Run single test file
 npx playwright test tests/example.spec.ts
 
 # Run specific browser only
-npx playwright test --project=chromium
+npm run test:chromium
 
 # Debug mode (headed browser)
-npx playwright test --headed
+npm run test:headed
 
 # View HTML report after run
-npx playwright show-report
+npm run test:report
+
+# Lint / format
+npm run lint
+npm run format:check
 ```
 
 ## Test conventions
@@ -30,8 +34,11 @@ npx playwright show-report
 - Language: TypeScript + Playwright
 - Test files: `tests/<feature>/<feature>.spec.ts` (mirror feature folder structure)
 - Page objects: `tests/pages/` — use Page Object Model for all page interactions
+- Import `test`/`expect` from `tests/fixtures.ts`, not `@playwright/test` directly — it injects page objects and a `loggedInPage` fixture (pre-authenticated as `standard_user`)
+- `baseURL` is set in `playwright.config.ts` — use relative paths (`page.goto('/')`) in page objects, not hardcoded URLs
 - Never commit directly to `main`
 - Never modify `playwright.config.ts` without asking first
+- `npm run lint` must pass with zero warnings before merge (CI-enforced)
 - CI: always headless; local debugging: use `--headed`
 
 ## Architecture
