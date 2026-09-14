@@ -45,6 +45,55 @@ test.describe('Checkout', () => {
     await expect(page.locator('[data-test="error"]')).toBeVisible();
   });
 
+  test('missing last name and postal code show field-specific errors', async ({
+    loggedInPage: inventoryPage,
+    cartPage,
+    checkoutPage,
+  }) => {
+    await inventoryPage.addToCart('sauce-labs-backpack');
+    await inventoryPage.goToCart();
+    await cartPage.checkout();
+
+    await checkoutPage.fillInfo('John', '', '');
+    await checkoutPage.continueToOverview();
+    await expect(checkoutPage.errorMessage).toContainText('Last Name is required');
+
+    await checkoutPage.fillInfo('John', 'Doe', '');
+    await checkoutPage.continueToOverview();
+    await expect(checkoutPage.errorMessage).toContainText('Postal Code is required');
+  });
+
+  test('cancel on step one returns to cart', async ({
+    page,
+    loggedInPage: inventoryPage,
+    cartPage,
+    checkoutPage,
+  }) => {
+    await inventoryPage.addToCart('sauce-labs-backpack');
+    await inventoryPage.goToCart();
+    await cartPage.checkout();
+
+    await checkoutPage.cancel();
+    await expect(page).toHaveURL(/cart/);
+  });
+
+  test('cancel on step two returns to inventory', async ({
+    page,
+    loggedInPage: inventoryPage,
+    cartPage,
+    checkoutPage,
+  }) => {
+    await inventoryPage.addToCart('sauce-labs-backpack');
+    await inventoryPage.goToCart();
+    await cartPage.checkout();
+
+    await checkoutPage.fillInfo('John', 'Doe', '12345');
+    await checkoutPage.continueToOverview();
+
+    await checkoutPage.cancel();
+    await expect(page).toHaveURL(/inventory/);
+  });
+
   test('order summary total equals item total plus tax', async ({
     loggedInPage: inventoryPage,
     cartPage,
