@@ -24,6 +24,16 @@ test.describe('Cart', () => {
     await expect(inventoryPage.cartBadge).toBeHidden();
   });
 
+  test('removing item from inventory page updates badge without visiting cart', async ({
+    loggedInPage: inventoryPage,
+  }) => {
+    await inventoryPage.addToCart('sauce-labs-backpack');
+    await expect(inventoryPage.cartBadge).toHaveText('1');
+
+    await inventoryPage.removeFromCart('sauce-labs-backpack');
+    await expect(inventoryPage.cartBadge).toBeHidden();
+  });
+
   test('cart contents survive a page reload', async ({ page, loggedInPage: inventoryPage }) => {
     await inventoryPage.addToCart('sauce-labs-backpack');
 
