@@ -6,6 +6,7 @@ export class CheckoutPage {
   readonly postalCodeInput = this.page.locator('[data-test="postalCode"]');
   readonly continueButton = this.page.locator('[data-test="continue"]');
   readonly finishButton = this.page.locator('[data-test="finish"]');
+  readonly cancelButton = this.page.locator('[data-test="cancel"]');
   readonly completeHeader = this.page.locator('[data-test="complete-header"]');
   readonly subtotalLabel = this.page.locator('[data-test="subtotal-label"]');
   readonly taxLabel = this.page.locator('[data-test="tax-label"]');
@@ -25,5 +26,9 @@ export class CheckoutPage {
 
   async finish() {
     await this.finishButton.click();
+  }
+
+  async cancel() {
+    await this.cancelButton.click();
   }
 }
