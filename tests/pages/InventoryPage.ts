@@ -15,10 +15,6 @@ export class InventoryPage {
     await this.page.locator(`[data-test="add-to-cart-${productSlug}"]`).click();
   }
 
-  async removeFromCart(productSlug: string) {
-    await this.page.locator(`[data-test="remove-${productSlug}"]`).click();
-  }
-
   async openProduct(name: string) {
     await this.itemNames.filter({ hasText: name }).click();
   }
