@@ -46,6 +46,15 @@ test.describe('Inventory', () => {
     expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
   });
 
+  test('sorts products by name Z to A', async ({ loggedInPage: inventoryPage }) => {
+    await inventoryPage.sortBy('za');
+
+    // eslint-disable-next-line playwright/prefer-web-first-assertions -- comparing derived order, not element state
+    const names = await inventoryPage.itemNames.allTextContents();
+
+    expect(names).toEqual([...names].sort((a, b) => b.localeCompare(a)));
+  });
+
   test('logs out via the burger menu and blocks back-navigation into inventory', async ({
     page,
     loggedInPage: inventoryPage,
