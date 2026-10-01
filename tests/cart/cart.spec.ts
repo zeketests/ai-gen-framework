@@ -1,11 +1,15 @@
 import { test, expect } from '../fixtures';
 
 test.describe('Cart', () => {
-  test('shows 1 item after adding a product', async ({ loggedInPage: inventoryPage }) => {
-    await inventoryPage.addToCart('sauce-labs-backpack');
+  test(
+    'shows 1 item after adding a product',
+    { tag: '@smoke' },
+    async ({ loggedInPage: inventoryPage }) => {
+      await inventoryPage.addToCart('sauce-labs-backpack');
 
-    await expect(inventoryPage.cartBadge).toHaveText('1');
-  });
+      await expect(inventoryPage.cartBadge).toHaveText('1');
+    },
+  );
 
   test('badge count increases for each added product', async ({ loggedInPage: inventoryPage }) => {
     await inventoryPage.addToCart('sauce-labs-backpack');

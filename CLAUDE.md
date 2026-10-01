@@ -18,6 +18,9 @@ npx playwright test tests/example.spec.ts
 # Run specific browser only
 npm run test:chromium
 
+# Smoke subset only (tests tagged @smoke)
+npm run test:smoke
+
 # Debug mode (headed browser)
 npm run test:headed
 
@@ -35,6 +38,8 @@ npm run format:check
 - Test files: `tests/<feature>/<feature>.spec.ts` (mirror feature folder structure)
 - Page objects: `tests/pages/` — use Page Object Model for all page interactions
 - Import `test`/`expect` from `tests/fixtures.ts`, not `@playwright/test` directly — it injects page objects and a `loggedInPage` fixture (pre-authenticated as `standard_user`)
+- Seeded users live in `tests/data/users.ts`; switch `loggedInPage` user with `test.use({ user: USERS.problem })`
+- Tag critical-path tests `{ tag: '@smoke' }`; known-defect specs for quirk users are tagged `@quirk`
 - `baseURL` is set in `playwright.config.ts` — use relative paths (`page.goto('/')`) in page objects, not hardcoded URLs
 - Never commit directly to `main`
 - Never modify `playwright.config.ts` without asking first

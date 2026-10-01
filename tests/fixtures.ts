@@ -5,26 +5,30 @@ import { LoginPage } from './pages/LoginPage';
 import { InventoryPage } from './pages/InventoryPage';
 import { CartPage } from './pages/CartPage';
 import { CheckoutPage } from './pages/CheckoutPage';
+import { ProductPage } from './pages/ProductPage';
+import { PASSWORD, USERS, Username } from './data/users';
 
-export const STANDARD_USER = { username: 'standard_user', password: 'secret_sauce' };
+export const STANDARD_USER = { username: USERS.standard, password: PASSWORD };
 
 const AUTH_DIR = path.join(__dirname, '..', 'playwright', '.auth');
 
 type Fixtures = {
+  /** User that `loggedInPage` logs in as. Override with `test.use({ user: USERS.problem })`. */
+  user: Username;
+  /** Path to a storageState file holding a session for `user`, cached per worker and user. */
+  authStatePath: string;
   loginPage: LoginPage;
   inventoryPage: InventoryPage;
   cartPage: CartPage;
   checkoutPage: CheckoutPage;
-  /** Inventory page with a standard_user session already logged in. */
+  productPage: ProductPage;
+  /** Inventory page with a `user` session already logged in (standard_user by default). */
   loggedInPage: InventoryPage;
 };
 
-type WorkerFixtures = {
-  /** Path to a storageState file holding a standard_user session, logged in once per worker. */
-  authStatePath: string;
-};
+export const test = base.extend<Fixtures>({
+  user: [USERS.standard, { option: true }],
 
-export const test = base.extend<Fixtures, WorkerFixtures>({
   loginPage: async ({ page }, use) => {
     await use(new LoginPage(page));
   },
@@ -37,26 +41,26 @@ export const test = base.extend<Fixtures, WorkerFixtures>({
   checkoutPage: async ({ page }, use) => {
     await use(new CheckoutPage(page));
   },
+  productPage: async ({ page }, use) => {
+    await use(new ProductPage(page));
+  },
 
-  authStatePath: [
-    async ({ browser }, use, workerInfo) => {
-      const fileName = path.join(AUTH_DIR, `${workerInfo.parallelIndex}.json`);
+  authStatePath: async ({ browser, user }, use, testInfo) => {
+    const fileName = path.join(AUTH_DIR, `${testInfo.parallelIndex}-${user}.json`);
 
-      if (!fs.existsSync(fileName)) {
-        fs.mkdirSync(AUTH_DIR, { recursive: true });
+    if (!fs.existsSync(fileName)) {
+      fs.mkdirSync(AUTH_DIR, { recursive: true });
 
-        const page = await browser.newPage();
-        const loginPage = new LoginPage(page);
-        await loginPage.goto();
-        await loginPage.login(STANDARD_USER.username, STANDARD_USER.password);
-        await page.context().storageState({ path: fileName });
-        await page.close();
-      }
+      const page = await browser.newPage();
+      const loginPage = new LoginPage(page);
+      await loginPage.goto();
+      await loginPage.login(user, PASSWORD);
+      await page.context().storageState({ path: fileName });
+      await page.close();
+    }
 
-      await use(fileName);
-    },
-    { scope: 'worker' },
-  ],
+    await use(fileName);
+  },
 
   loggedInPage: async ({ page, inventoryPage, authStatePath }, use) => {
     const { cookies } = JSON.parse(fs.readFileSync(authStatePath, 'utf-8'));
