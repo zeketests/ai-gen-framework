@@ -6,17 +6,26 @@ export class InventoryPage {
   readonly sortSelect = this.page.locator('[data-test="product-sort-container"]');
   readonly itemNames = this.page.locator('[data-test="inventory-item-name"]');
   readonly itemPrices = this.page.locator('[data-test="inventory-item-price"]');
+  readonly itemImages = this.page.locator('.inventory_item_img img');
   readonly menuButton = this.page.locator('#react-burger-menu-btn');
   readonly logoutLink = this.page.locator('[data-test="logout-sidebar-link"]');
 
   constructor(private page: Page) {}
 
+  addToCartButton(productSlug: string) {
+    return this.page.locator(`[data-test="add-to-cart-${productSlug}"]`);
+  }
+
+  removeButton(productSlug: string) {
+    return this.page.locator(`[data-test="remove-${productSlug}"]`);
+  }
+
   async addToCart(productSlug: string) {
-    await this.page.locator(`[data-test="add-to-cart-${productSlug}"]`).click();
+    await this.addToCartButton(productSlug).click();
   }
 
   async removeFromCart(productSlug: string) {
-    await this.page.locator(`[data-test="remove-${productSlug}"]`).click();
+    await this.removeButton(productSlug).click();
   }
 
   async openProduct(name: string) {

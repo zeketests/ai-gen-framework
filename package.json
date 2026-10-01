@@ -6,6 +6,7 @@
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:chromium": "playwright test --project=chromium",
+    "test:smoke": "playwright test --grep @smoke",
     "test:report": "playwright show-report",
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
